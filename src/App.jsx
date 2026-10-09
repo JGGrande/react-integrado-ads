@@ -1,43 +1,63 @@
 import { useState } from "react"
-
-function Pastel(props) {
-  return (
-    <button className="my-btn" onClick={props.onClick}>{props.ze}</button>
-  )
-}
+import { ListaDeTarefas } from "../src/components/Lista"
 
 function App() {
-  const [tarefas, setTarefas] = useState([
-    { id: 1, texto: "Estudar React", feito: true },
-    { id: 2, texto: "Fazer a trilha", feito: false },
-  ])
+  const [texto, setTexto] = useState(null);
+  const [tarefas, setTarefas] = useState([]);
 
-  function addTarefa() {
+  function addTarefa(event) {
+    event.preventDefault();
+
     const newTarefa = {
-      id: 3,
-      texto: "Estudar as 173 questões da prova",
+      id: tarefas.length + 1,
+      texto: texto,
       feito: false
     }
 
-    setTarefas([ ...tarefas, newTarefa ])
+    setTarefas([...tarefas, newTarefa])
+    setTexto("")
+  }
+
+  function toggleFeito(id) {
+    const tarefasAtualizadas = tarefas.map((tarefa) => {
+      if (tarefa.id === id) {
+        tarefa.feito = !tarefa.feito
+      }
+
+      return tarefa
+    })
+
+    setTarefas(tarefasAtualizadas)
   }
 
   return (
     <div className="app">
       <h1>Minhas tarefas</h1>
 
-      <Pastel onClick={addTarefa} ze="Salve" />
-      <Pastel onClick={addTarefa} ze="Legal ne" />
+      <form className="todo-form" onSubmit={addTarefa}>
+        <input
+          type="text"
+          placeholder="O que precisa ser feito?"
+          value={texto}
+          onChange={(event) => setTexto(event.target.value)}
+        />
+        <button type="submit">Adicionar</button>
+      </form>
 
-      <br />
-      <br />
-      <br />
-
-      <ul>
+      {/* <ListaDeTarefas tarefas={tarefas} /> */}
+      <ul className="lista">
         {
           tarefas.map((item) => {
             return (
-              <li>{item.texto}</li>
+              <li className="tarefa">
+                <input
+                  className="tarefa-checkbox"
+                  type="checkbox"
+                  checked={item.feito}
+                  onClick={() => toggleFeito(item.id)}
+                />
+                {item.texto}
+              </li>
             )
           })
         }
