@@ -1,0 +1,163 @@
+body {
+  background-color: #121212;
+}
+
+.page-content {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #fff;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.page-description {
+  color: #b3b3b3;
+  margin-bottom: 24px;
+}
+
+.search-form {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 24px;
+}
+
+.search-form input {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-form input {
+  background-color: #242424;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 12px 20px;
+  color: #fff;
+}
+
+.search-form input::placeholder {
+  color: #b3b3b3;
+}
+
+.search-form input:focus {
+  outline: 2px solid #1db954;
+  outline-offset: 1px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, opacity 0.15s;
+}
+
+.btn-primary {
+  background-color: #1db954;
+  color: #000;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.btn-primary:hover {
+  background-color: #1ed760;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #727272;
+  border-radius: 999px;
+}
+
+.btn-secondary:hover {
+  border-color: #fff;
+  transform: scale(1.03);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background-color: #181818;
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  background-color: #282828;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.card-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #282828;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.card h3 {
+  font-size: 1rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-subtitle {
+  font-size: 0.85rem;
+  color: #b3b3b3;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  color: #1ed760;
+  background-color: rgba(29, 185, 84, 0.15);
+  border-radius: 999px;
+}
+
+.card-audio {
+  color-scheme: dark;
+  width: 100%;
+  min-height: 40px;
+}
+
+.card-actions {
+  margin-top: auto;
+}
+
+.card-actions .btn {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .search-form {
+    flex-direction: column;
+  }
+}
