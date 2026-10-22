@@ -3,12 +3,50 @@ import "./Musica.css"
 
 export function MusicaPage() {
     const [termo, setTermo] = useState("");
+    const [musicas, setMusicas] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    async function search(searchTerm) {
+        const query = new URLSearchParams({
+            term: searchTerm,
+            media: "music",
+            entity: "song",
+            limit: 20
+        });
+
+        setLoading(true)
+
+        const resposta = await fetch(`https://itunes.apple.com/search?${query}`);
+
+        // Sleep 3s
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        const responseBody = await resposta.json();
+
+        setLoading(false);
+        setMusicas(responseBody.results);
+    }
 
     function onFormSubmit(event) {
         event.preventDefault();
 
-        console.log("Buscando da api....")
+        search(termo);
     }
+
+    // if (loading) {
+    //     return (
+    //         <div style={{
+    //             width: "100%",
+    //             height: "100vh",
+    //             display: "flex",
+    //             justifyContent: "center",
+    //             alignItems: "center",
+    //             flex: 1
+    //         }}>
+    //             <span class="loader"></span>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div className="page-content">
@@ -27,6 +65,40 @@ export function MusicaPage() {
                     Buscar
                 </button>
             </form>
-        </div>
+
+            {
+                loading && (
+                    <div style={{
+                        width: "100%",
+                        height: "100vh",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                        zIndex: 999
+                    }}>
+                        <span class="loader"></span>
+                    </div>
+                )
+            }
+
+            <div className="card-grid">
+                {
+                    musicas.map((musica) => {
+                        return (
+                            <div key={`${musica.trackId}`} className="card">
+                                <img
+                                    src={musica.artworkUrl100}
+                                    className="card-photo"
+                                />
+
+                                <h3>{musica.trackName}</h3>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+
+        </div >
     )
 }
