@@ -1,58 +1,60 @@
-import { useState } from "react"
+import { useEffect, useState, type SubmitEvent } from "react"
 import "./Musica.css"
+import { Header } from "./componentes/Header";
+import { Loading } from "./componentes/Loading";
+
+type Musica = {
+    trackId: number;
+    trackName: string;
+    artworkUrl100: string;
+    collectionName: string;
+}
 
 export function MusicaPage() {
     const [termo, setTermo] = useState("");
-    const [musicas, setMusicas] = useState([]);
+    const [musicas, setMusicas] = useState<Musica[]>([]);
     const [loading, setLoading] = useState(false);
 
-    async function search(searchTerm) {
+    async function search(searchTerm: string) {
         const query = new URLSearchParams({
             term: searchTerm,
             media: "music",
             entity: "song",
-            limit: 20
+            limit: "20"
         });
 
+        setMusicas([])
         setLoading(true)
 
-        const resposta = await fetch(`https://itunes.apple.com/search?${query}`);
+        try {
+            const resposta = await fetch(`https://itunes.apple.com/search?${query}`);
 
-        // Sleep 3s
-        await new Promise(resolve => setTimeout(resolve, 3000));
+            const responseBody = await resposta.json();
+    
+            setMusicas(responseBody.results);
+        }catch {
+            alert("Falha ao buscar dados, verifique sua conexão com a internet!")
+        }finally {
+            setLoading(false)
+        }
 
-        const responseBody = await resposta.json();
-
-        setLoading(false);
-        setMusicas(responseBody.results);
     }
 
-    function onFormSubmit(event) {
+    function onFormSubmit(event: SubmitEvent) {
         event.preventDefault();
 
         search(termo);
     }
 
-    // if (loading) {
-    //     return (
-    //         <div style={{
-    //             width: "100%",
-    //             height: "100vh",
-    //             display: "flex",
-    //             justifyContent: "center",
-    //             alignItems: "center",
-    //             flex: 1
-    //         }}>
-    //             <span class="loader"></span>
-    //         </div>
-    //     )
-    // }
+    //  Executa um código apenas uma vez na montagem do componente
+    // Quando a página for acessada
+    useEffect(() => {
+        search("Menos é mais")
+    }, [])
 
     return (
         <div className="page-content">
-            <div className="page-header">
-                <h1>SpotUI</h1>
-            </div>
+            <Header />
 
             <form onSubmit={onFormSubmit} className="search-form">
                 <input
@@ -67,19 +69,7 @@ export function MusicaPage() {
             </form>
 
             {
-                loading && (
-                    <div style={{
-                        width: "100%",
-                        height: "100vh",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        zIndex: 999
-                    }}>
-                        <span class="loader"></span>
-                    </div>
-                )
+                loading && (<Loading />)
             }
 
             <div className="card-grid">
@@ -88,11 +78,13 @@ export function MusicaPage() {
                         return (
                             <div key={`${musica.trackId}`} className="card">
                                 <img
-                                    src={musica.artworkUrl100}
+                                    src={musica.artworkUrl100.replace("100x100bb", "700x700bb")}
                                     className="card-photo"
                                 />
 
                                 <h3>{musica.trackName}</h3>
+
+                                <h3>{musica.collectionName}</h3>
                             </div>
                         )
                     })
