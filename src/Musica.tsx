@@ -49,7 +49,7 @@ export function MusicaPage() {
     //  Executa um código apenas uma vez na montagem do componente
     // Quando a página for acessada
     useEffect(() => {
-        search("Menos é mais")
+        search("Péricles")
     }, [])
 
     return (

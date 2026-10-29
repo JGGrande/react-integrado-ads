@@ -235,3 +235,103 @@ body {
     margin-top: 0;
   }
 }
+
+
+/* ===== Aula 04: menu ===== */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.nav a {
+  color: #b3b3b3;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav a:hover {
+  color: #fff;
+}
+
+/* ===== Aula 04: formulário ===== */
+.music-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+  padding: 24px;
+  background-color: #181818;
+  border-radius: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+
+.field input {
+  background-color: #242424;
+  border: 1px solid #3e3e3e;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.field input:focus {
+  outline: 2px solid #1db954;
+  outline-offset: 1px;
+}
+
+.field-error {
+  color: #f15e6c;
+  font-size: 0.8rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-danger {
+  background-color: transparent;
+  color: #f15e6c;
+  border: 1px solid #f15e6c;
+  border-radius: 999px;
+}
+
+.btn-danger:hover {
+  background-color: rgba(241, 94, 108, 0.15);
+}
+
+.card-actions-row {
+  display: flex;
+  gap: 8px;
+}
+
+.card-actions-row .btn {
+  flex: 1;
+}
+
+.empty-state {
+  padding: 48px 0;
+  text-align: center;
+  color: #b3b3b3;
+}
