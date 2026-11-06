@@ -21,6 +21,7 @@ export function MusicaListPage() {
 
     async function deleteMusica(id: number) {
         await api.delete(`/musics/${id}`)
+        loadMusics()
     }
 
     useEffect(() => {
@@ -43,11 +44,14 @@ export function MusicaListPage() {
                             <h3>{musica.title}</h3>
 
                             <div className="card-actions card-actions-row">
-                                <Link to={``} className="btn btn-secondary">
+                                <Link 
+                                    to={`/musicas/${musica.id}/editar`} 
+                                    className="btn btn-secondary"
+                                >
                                     Editar
                                 </Link>
                                 <button
-                                    onClick={() => deleteMusica(musica.id)}
+                                    onClick={() => deleteMusica(musica.id)} 
                                     className="btn btn-danger"
                                 >
                                     Excluir

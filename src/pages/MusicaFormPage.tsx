@@ -1,7 +1,10 @@
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import { api } from "../api/axios";
 import { Loading } from "../componentes/Loading";
 import { Header } from "../componentes/Header";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import z from "zod";
 
 type Musica = {
     title: string;
@@ -10,7 +13,19 @@ type Musica = {
     photoUrl: string;
 }
 
+const schema = z.object({
+    title: z
+        .string()
+        .nonempty("Campo obrigatório")
+        .min(3, "Mínimo 3 caracteres")
+        .max(150, "Máximo 150 caracteres"),
+    durationInSeconds: z.number().int().positive(),
+    releaseYear: z.number().int().positive(),
+    photoUrl: z.url().nullish()
+})
+
 export function MusicaFormPage() {
+    const { id } = useParams();
     const [form, setForm] = useState<Musica>({
         title: "",
         durationInSeconds: "",
@@ -18,24 +33,57 @@ export function MusicaFormPage() {
         photoUrl: ""
     });
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [erros, setErrors] = useState<Record<string, string[]>>({})
 
     async function onFormSubmit(event: SubmitEvent) {
         event.preventDefault();
 
+        const resultado = schema.safeParse(form);
+
+        if (!resultado.success) {
+            setErrors(z.flattenError(resultado.error).fieldErrors)
+            return;
+        }
+
         setLoading(true)
-        const response = await api.post("/musics", form)
-        await new Promise(resolve => setTimeout(resolve, 3000))
-        setLoading(false)
+
+        if (id) {
+            await api.put(`/musics/${id}`, form)
+
+            setLoading(false)
+
+            toast.success("Musica alterada com sucesso!", {
+                theme: "dark",
+                draggable: true
+            })
+        } else {
+            await api.post("/musics", form)
+
+            setLoading(false)
+
+            toast.error("Musica cadastrada com sucesso!")
+        }
+
+        navigate("/")
+    }
+
+    async function loadMusic() {
+        const response = await api.get(`/musics/${id}`)
 
         setForm({
-            title: "",
-            durationInSeconds: "",
-            releaseYear: "",
-            photoUrl: ""
-        })
-
-        alert("Musica cadastrada com sucesso!")
+            title: response.data.title,
+            durationInSeconds: response.data.durationInSeconds,
+            photoUrl: response.data.photoUrl,
+            releaseYear: response.data.releaseYear
+        })   
     }
+
+    useEffect(() => {
+        if (id) {
+            loadMusic()
+        }
+    }, [])
 
     return (
         <>
@@ -59,6 +107,7 @@ export function MusicaFormPage() {
                             title: ev.target.value
                         })}
                     />
+                    { erros.title && (<span className="field-error">{erros.title.join(" ")}</span>) }
                 </div>
 
                 <div className="field">
@@ -89,6 +138,7 @@ export function MusicaFormPage() {
                     <label>Foto URL</label>
                     <input
                         type="url"
+                        value={form.photoUrl}
                         onChange={(ev) => setForm({
                             ...form,
                             photoUrl: ev.target.value
