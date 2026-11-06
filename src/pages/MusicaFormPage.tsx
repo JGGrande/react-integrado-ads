@@ -1,6 +1,7 @@
 import { useState, type SubmitEvent } from "react";
 import { api } from "../api/axios";
 import { Loading } from "../componentes/Loading";
+import { Header } from "../componentes/Header";
 
 type Musica = {
     title: string;
@@ -37,73 +38,77 @@ export function MusicaFormPage() {
     }
 
     return (
-        <form onSubmit={onFormSubmit} className="music-form">
-            { loading ? (<Loading />) : (<></>) }
+        <>
+            <Header />
 
-            <h2>Nova música</h2>
+            <form onSubmit={onFormSubmit} className="music-form">
+                {loading ? (<Loading />) : (<></>)}
 
-            <div className="field">
-                <label>Titulo</label>
-                <input
-                    type="text"
-                    value={form.title}
-                    onChange={(ev) => setForm({
-                        ...form,
-                        // releaseYear: form.releaseYear,
-                        // durationInSeconds: form.durationInSeconds,
-                        // photoUrl: form.photoUrl,
-                        title: ev.target.value
-                    })}
-                />
-            </div>
+                <h2>Nova música</h2>
 
-            <div className="field">
-                <label>Duração (segundos)</label>
-                <input
-                    type="number"
-                    value={form.durationInSeconds}
-                    onChange={(ev) => setForm({
-                        ...form,
-                        durationInSeconds: ev.target.value,
-                    })}
-                />
-            </div>
+                <div className="field">
+                    <label>Titulo</label>
+                    <input
+                        type="text"
+                        value={form.title}
+                        onChange={(ev) => setForm({
+                            ...form,
+                            // releaseYear: form.releaseYear,
+                            // durationInSeconds: form.durationInSeconds,
+                            // photoUrl: form.photoUrl,
+                            title: ev.target.value
+                        })}
+                    />
+                </div>
 
-            <div className="field">
-                <label>Ano lançamento</label>
-                <input
-                    type="number"
-                    value={form.releaseYear}
-                    onChange={(ev) => setForm({
-                        ...form,
-                        releaseYear: ev.target.value
-                    })}
-                />
-            </div>
+                <div className="field">
+                    <label>Duração (segundos)</label>
+                    <input
+                        type="number"
+                        value={form.durationInSeconds}
+                        onChange={(ev) => setForm({
+                            ...form,
+                            durationInSeconds: ev.target.value,
+                        })}
+                    />
+                </div>
 
-            <div className="field">
-                <label>Foto URL</label>
-                <input
-                    type="url"
-                    onChange={(ev) => setForm({
-                        ...form,
-                        photoUrl: ev.target.value
-                    })}
-                />
-            </div>
+                <div className="field">
+                    <label>Ano lançamento</label>
+                    <input
+                        type="number"
+                        value={form.releaseYear}
+                        onChange={(ev) => setForm({
+                            ...form,
+                            releaseYear: ev.target.value
+                        })}
+                    />
+                </div>
 
-            <div className="form-actions">
-                {
-                    !loading
-                        ? (
-                            <button type="submit" className="btn btn-primary">
-                                Salvar
-                            </button>
-                        )
-                        : (<></>)
-                }
+                <div className="field">
+                    <label>Foto URL</label>
+                    <input
+                        type="url"
+                        onChange={(ev) => setForm({
+                            ...form,
+                            photoUrl: ev.target.value
+                        })}
+                    />
+                </div>
 
-            </div>
-        </form>
+                <div className="form-actions">
+                    {
+                        !loading
+                            ? (
+                                <button type="submit" className="btn btn-primary">
+                                    Salvar
+                                </button>
+                            )
+                            : (<></>)
+                    }
+
+                </div>
+            </form>
+        </>
     )
 }

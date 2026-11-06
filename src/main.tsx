@@ -7,14 +7,17 @@ import App from './App.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { NotFoundPage } from './pages/NotFoundPage.tsx'
 import { MusicaFormPage } from './pages/MusicaFormPage.tsx'
+import { MusicaListPage } from './pages/MusicaListPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <div className='page-content'>
         <Routes>
-          <Route path='/' element={<MusicaPage />} />
-          <Route path='/app' element={<App />} />
+          {/* Nossa página de musicas */}
+          <Route path='/' element={<MusicaListPage />} />
+          {/* Itunes */}
+          <Route path='/itunes' element={<MusicaPage />} /> 
           <Route path='/musicas/cadastro' element={<MusicaFormPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
